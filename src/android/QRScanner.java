@@ -60,7 +60,9 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
     private boolean oneTime = true;
     private boolean keepDenied = false;
     private boolean appPausedWithActivePreview = false;
-    
+    private boolean readQRCode = true;
+    private boolean readBarcode = false;
+
     static class QRScannerError {
         private static final int UNEXPECTED_ERROR = 0,
                 CAMERA_ACCESS_DENIED = 1,
@@ -455,7 +457,22 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
 
                 //Configure the decoder
                 ArrayList<BarcodeFormat> formatList = new ArrayList<BarcodeFormat>();
-                formatList.add(BarcodeFormat.QR_CODE);
+
+                if (readQRCode) {
+                    formatList.add(BarcodeFormat.QR_CODE);
+                }
+
+                if (readBarcode) {
+                    formatList.add(BarcodeFormat.CODE_128);
+                    formatList.add(BarcodeFormat.CODE_93);
+                    formatList.add(BarcodeFormat.CODE_39);
+                    formatList.add(BarcodeFormat.EAN_13);
+                    formatList.add(BarcodeFormat.EAN_8);
+                    formatList.add(BarcodeFormat.ITF);
+                    formatList.add(BarcodeFormat.UPC_A);
+                    formatList.add(BarcodeFormat.UPC_E);
+                }
+
                 mBarcodeView.setDecoderFactory(new DefaultDecoderFactory(formatList, null, null));
 
                 //Configure the camera (front/back)
@@ -493,6 +510,14 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
         else {
             scan(this.nextScanCallback);
         }
+    }
+
+    public void allowQRCode(boolean allow) {
+        readQRCode = allow;
+    }
+
+    public void allowBarcode(boolean allow) {
+        readBarcode = allow;
     }
 
     @Override
@@ -641,7 +666,7 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
                     if(lightOn)
                         lightOn = false;
                 }
-                
+
                 if (callbackContext != null)
                     getStatus(callbackContext);
             }
@@ -659,7 +684,7 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
                     if(switchFlashOn)
                         lightOn = true;
                 }
-                
+
                 if (callbackContext != null)
                     getStatus(callbackContext);
             }
