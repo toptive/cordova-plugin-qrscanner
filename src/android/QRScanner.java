@@ -214,6 +214,28 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
                 });
                 return true;
             }
+            else if (action.equals("allowQRCode")) {
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        try {
+                            readQRCode = args.getBoolean(0);
+                        } catch (JSONException e) {
+                        }
+                    }
+                });
+                return true;
+            }
+            else if (action.equals("allowBarcode")) {
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        try {
+                            readBarcode = args.getBoolean(0);
+                        } catch (JSONException e) {
+                        }
+                    }
+                });
+                return true;
+            }
             else {
                 return false;
             }
@@ -510,14 +532,6 @@ public class QRScanner extends CordovaPlugin implements BarcodeCallback {
         else {
             scan(this.nextScanCallback);
         }
-    }
-
-    public void allowQRCode(boolean allow) {
-        readQRCode = allow;
-    }
-
-    public void allowBarcode(boolean allow) {
-        readBarcode = allow;
     }
 
     @Override
