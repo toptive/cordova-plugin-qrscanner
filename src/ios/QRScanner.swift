@@ -249,12 +249,23 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
             // while nothing is detected, or if scanning is false, do nothing.
             return
         }
-        let found = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-        if found.type == AVMetadataObject.ObjectType.qr && found.stringValue != nil {
-            scanning = false
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: found.stringValue)
-            commandDelegate!.send(pluginResult, callbackId: nextScanningCommand?.callbackId!)
-            nextScanningCommand = nil
+        var supportTypes: [AVMetadataObject.ObjectType] = []
+        if (readQRCode && readBarcode) {
+            // EAN-13 includes UPC-A
+            supportTypes = [AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+        } else if (readQRCode) {
+            supportTypes = [AVMetadataObject.ObjectType.qr]
+        } else if (readBarcode) {
+            supportTypes = [AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+        }
+        for item in metadataObjects {
+            let found = item as! AVMetadataMachineReadableCodeObject
+            if supportTypes.contains(found.type) && found.stringValue != nil {
+                scanning = false
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: found.stringValue)
+                commandDelegate!.send(pluginResult, callbackId: nextScanningCommand?.callbackId!)
+                nextScanningCommand = nil
+            }
         }
     }
 
