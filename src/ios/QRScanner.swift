@@ -159,11 +159,11 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
 
                 if (readQRCode && readBarcode) {
                     // EAN-13 includes UPC-A
-                    metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+                    metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.dataMatrix, AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
                 } else if (readQRCode) {
                     metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
                 } else if (readBarcode) {
-                    metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+                    metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.dataMatrix, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
                 }
 
                 captureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
@@ -252,11 +252,11 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
         var supportTypes: [AVMetadataObject.ObjectType] = []
         if (readQRCode && readBarcode) {
             // EAN-13 includes UPC-A
-            supportTypes = [AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+            supportTypes = [AVMetadataObject.ObjectType.dataMatrix, AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
         } else if (readQRCode) {
             supportTypes = [AVMetadataObject.ObjectType.qr]
         } else if (readBarcode) {
-            supportTypes = [AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
+            supportTypes = [AVMetadataObject.ObjectType.dataMatrix, AVMetadataObject.ObjectType.code128, AVMetadataObject.ObjectType.code39, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.upce]
         }
         for item in metadataObjects {
             let found = item as! AVMetadataMachineReadableCodeObject
